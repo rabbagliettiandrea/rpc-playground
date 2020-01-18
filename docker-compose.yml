@@ -1,0 +1,34 @@
+version: '3.6'
+
+services:
+
+  rpc_client:
+    build: rpc/rpc_client/
+
+  rpc_server:
+    build: rpc/rpc_server/
+
+  broker:
+    image: rabbitmq:3-management
+    restart: always
+    volumes:
+      - broker_data:/var/lib/rabbitmq
+    ports:
+      - "15680:15672"
+      - "5680:5672"
+
+  tracer:
+    image: jaegertracing/all-in-one:0.8.0
+    restart: always
+    ports:
+      - "5775:5775/udp"
+      - "6831:6831/udp"
+      - "6832:6832/udp"
+      - "5778:5778"
+      - "16686:16686"
+      - "14268:14268"
+      - "9411:9411"
+
+volumes:
+
+  broker_data:
